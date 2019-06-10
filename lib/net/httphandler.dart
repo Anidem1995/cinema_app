@@ -18,6 +18,25 @@ class HttpHandler {
     return response.statusCode == 200 ? true : false;
   }
 
+  Future<List<Movie>> MovieListByGenre(genre) async {
+    final response = await http.get('http://$server_url:8080/api/pelicula/list/genre/$genre');
+
+    if(response.statusCode == 200) {
+      List movies = json.decode(response.body);
+      return movies.map((movie) => Movie.fromJson(movie)).toList();
+    } else throw Exception('Todo mal');
+  }
+
+  Future<List<Movie>> RandomMovieList() async {
+    final response = await http.get('http://$server_url:8080/api/pelicula/random');
+
+    if(response.statusCode == 200) {
+      List movies = json.decode(response.body);
+      return movies.map((movie) => Movie.fromJson(movie)).toList();
+    }
+    else throw Exception('Todo mal');
+  }
+
   Future<List<Movie>> MovieList() async {
     final response = await http.get('http://$server_url:8080/api/pelicula/lista');
 

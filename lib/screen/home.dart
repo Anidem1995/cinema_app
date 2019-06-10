@@ -3,6 +3,9 @@ import 'package:cinema_app/model/movie.dart';
 import 'package:cinema_app/net/httphandler.dart';
 import 'package:cinema_app/card/card_movie.dart';
 import 'package:cinema_app/screen/tickets.dart';
+import 'package:cinema_app/screen/movies_by_genre.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cinema_app/screen/login.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -25,7 +28,7 @@ class _HomeState extends State<Home> {
       title: 'Cine volador mágico del poder',
       theme: ThemeData(primarySwatch: Colors.red),
       home: Scaffold(
-        appBar: AppBar(title: Text('Holi'),),
+        appBar: AppBar(title: Text('Home'),),
         drawer: Drawer(
           child: ListView(
             children: <Widget>[
@@ -49,10 +52,17 @@ class _HomeState extends State<Home> {
               ListTile(
                 title: Text('Lista'),
                 leading: Icon(Icons.movie),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MoviesByGenre())
+                  );
+                },
               ),
               ListTile(
                 title: Text('Cerrar sesión'),
                 leading: Icon(Icons.exit_to_app),
+                onTap: () => logout(),
               )
             ],
           ),
@@ -81,9 +91,18 @@ class _HomeState extends State<Home> {
   }
 
   void getMovies() async {
-    var movies = await HttpHandler().MovieList();
+    var movies = await HttpHandler().RandomMovieList();
     setState(() {
       listMovie.addAll(movies);
     });
+  }
+
+  void logout() async{ //cuando damos clic en logout borra todo lo de la preferences
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.clear();
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder:(context) => Login()),
+            (Route<dynamic> route) => false
+    );
   }
 }

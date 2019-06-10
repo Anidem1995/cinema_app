@@ -24,7 +24,7 @@ class _TicketsState extends State<Tickets> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Holi'),),
+      appBar: AppBar(title: Text('Cartelera'),),
       body: Center(
         child: ListView.builder(
           scrollDirection: Axis.vertical,
