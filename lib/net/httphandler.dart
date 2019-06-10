@@ -38,7 +38,15 @@ class HttpHandler {
     else throw Exception('Todo mal');
   }
 
-  Future<bool> saveTicket(id_pelicula, sala, hora, asiento) async {
-    final response = await http.post('http://$server_url:8080/api/boleto/insertar/$id_pelicula/$sala/$hora/$asiento');
+  Future<bool> saveTicket(id_funcion, asiento) async {
+    final response = await http.post('http://$server_url:8080/api/boleto/insertar/$id_funcion/$asiento');
+    if(response.statusCode == 204){
+      print('Simon que sí');
+      return true;
+    }
+    else {
+      print('Chale');
+      return false;
+    }
   }
 }

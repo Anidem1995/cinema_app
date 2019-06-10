@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cinema_app/model/movie.dart';
 import 'package:cinema_app/model/movie_function.dart';
+import 'package:cinema_app/net/httphandler.dart';
+import 'package:cinema_app/screen/home.dart';
 
 class BuyTickets extends StatefulWidget {
   Movie movie;
@@ -25,6 +27,49 @@ class _BuyTicketsSate extends State<BuyTickets> {
 
 
   TextEditingController counterController = TextEditingController(text: '0');
+
+  _saveTicket(id_funcion, asiento, context) async {
+    bool status = await HttpHandler().saveTicket(id_funcion, asiento);
+
+    if(status) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Todo chido todo ok'),
+              content: Text('Boleto comprado'),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => Home()));
+                    },
+                    child: Text('Aceptar'))
+              ],
+            );
+          }
+      );
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Todo mal todo no ok'),
+              content: Text('Boleto no comprado'),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Aceptar'))
+              ],
+            );
+          }
+      );
+    }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +109,7 @@ class _BuyTicketsSate extends State<BuyTickets> {
                   actions: <Widget>[
                     FlatButton(
                       child: Text('Aceptar'),
-                      onPressed: () {
-                        //getData();
-                      },
+                      onPressed: () => _saveTicket(widget.movieFunction.id_funcion, lis[index], context)
                     ),
                     FlatButton(
                       child: Text('Cancelar'),
@@ -142,4 +185,6 @@ class _BuyTicketsSate extends State<BuyTickets> {
       ),
     );
   }
+
+
 }

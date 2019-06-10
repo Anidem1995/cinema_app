@@ -26,7 +26,6 @@ class _LoginState extends State<Login> {
     }
 
     _login() async {
-      print('clic');
       bool status = await HttpHandler().atemptLogin(userController.text, passwordController.text);
 
       if(status) {

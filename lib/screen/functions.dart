@@ -35,7 +35,7 @@ class _FunctionsState extends State<Functions> {
           children: <Widget>[
             Container(
                 width: MediaQuery.of(context).size.width,
-                height: 100.0,
+                height: 190.0,
                 child: FadeInImage.assetNetwork(
                   placeholder: "images/moviefilm.png",
                   image: "https://image.tmdb.org/t/p/w500" + widget.movie.image,
